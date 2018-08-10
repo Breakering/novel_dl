@@ -25,7 +25,7 @@ class EnglishNovelSpider(scrapy.Spider):
         return a.css("::attr(href)").extract_first()
 
     def parse(self, response):
-        all_novel_a_tag_list = response.css("div.novellist3 a")[:2]
+        all_novel_a_tag_list = response.css("div.novellist3 a")
         for a in all_novel_a_tag_list:
             yield response.follow(self.get_href(a), callback=self.parse_novel_info)
 
