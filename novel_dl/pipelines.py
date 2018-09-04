@@ -46,5 +46,17 @@ class NovelDlPipeline(object):
                     for chapter_file in chapter_file_list:
                         chapter_file_path = os.path.join(chapters_dir, chapter_file)
                         with open(chapter_file_path, "r") as chapter_detail:
+                            title_find = False
                             for line in chapter_detail:
+                                line = line.lstrip()  # 剔除开头的空格
+                                if line.startswith('Chapter'):  # 找到了标题
+                                    write_file(novel_file_path, '###start###\n', pattern='a')
+                                    write_file(novel_file_path, line, pattern='a')
+                                    write_file(novel_file_path, '###end###\n', pattern='a')
+                                    title_find = True
+                                    continue
+                                if title_find:
+                                    write_file(novel_file_path, '\t%s' % line, pattern='a')
+                                    title_find = False
+                                    continue
                                 write_file(novel_file_path, line, pattern='a')
